@@ -43,7 +43,7 @@ public class UserController {
     log.info(param.toString());
 
     // 从redis中获取code，比对用户传来的code
-    String code = (String) redisTemplate.opsForValue().get("code");
+    String code = (String) redisTemplate.opsForValue().get(param.get("email").toString());
     if (!code.equalsIgnoreCase(param.get("code").toString())) {
       throw new CustomException("验证码错误");
     }

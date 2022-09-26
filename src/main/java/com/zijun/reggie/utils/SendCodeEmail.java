@@ -80,7 +80,7 @@ public class SendCodeEmail {
       simpleMailMessage.setSubject(mailBean.getSubject());
       simpleMailMessage.setText(mailBean.getContent());
 
-      redisTemplate.opsForValue().set("code", code, 3000, TimeUnit.SECONDS);
+      redisTemplate.opsForValue().set(recipient, code, 3000, TimeUnit.SECONDS);
       javaMailSender.send(simpleMailMessage);
     }catch (Exception ex) {
       ex.printStackTrace();
