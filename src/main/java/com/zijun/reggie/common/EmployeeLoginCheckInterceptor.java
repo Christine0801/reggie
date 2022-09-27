@@ -28,7 +28,7 @@ public class EmployeeLoginCheckInterceptor extends HandlerInterceptorAdapter {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-    Integer employeeId = (Integer) redisTemplate.opsForValue().get("employee");
+    Long employeeId = (Long) redisTemplate.opsForValue().get("employee");
     String json = "";
     if (employeeId != null) {
       LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();

@@ -30,9 +30,9 @@ public class ShoppingCartController {
   @GetMapping("/list")
   public R<List<ShoppingCart>> list() {
 
-    Integer userId = (Integer) redisTemplate.opsForValue().get("user");
+    Long userId = (Long) redisTemplate.opsForValue().get("user");
     LambdaQueryWrapper<ShoppingCart> wrapper = new LambdaQueryWrapper<>();
-    wrapper.eq(ShoppingCart::getUserId, userId.longValue());
+    wrapper.eq(ShoppingCart::getUserId, userId);
     wrapper.orderByAsc(ShoppingCart::getCreateTime);
     List<ShoppingCart> shoppingCarts = shoppingCartService.list(wrapper);
 
@@ -42,10 +42,10 @@ public class ShoppingCartController {
   @PostMapping("/add")
   public R<ShoppingCart> add(@RequestBody ShoppingCart shoppingCart) {
 
-    Integer userId = (Integer) redisTemplate.opsForValue().get("user");
+    Long userId = (Long) redisTemplate.opsForValue().get("user");
 
     LambdaQueryWrapper<ShoppingCart> wrapper = new LambdaQueryWrapper<>();
-    wrapper.eq(ShoppingCart::getUserId, userId.longValue());
+    wrapper.eq(ShoppingCart::getUserId, userId);
     // 判断是菜品
     wrapper.eq(shoppingCart.getDishId() != null, ShoppingCart::getDishId, shoppingCart.getDishId());
     // 判断是套餐
@@ -69,9 +69,9 @@ public class ShoppingCartController {
   @PostMapping("/sub")
   public R<ShoppingCart> sub(@RequestBody ShoppingCart shoppingCart) {
 
-    Integer userId = (Integer) redisTemplate.opsForValue().get("user");
+    Long userId = (Long) redisTemplate.opsForValue().get("user");
     LambdaQueryWrapper<ShoppingCart> wrapper = new LambdaQueryWrapper<>();
-    wrapper.eq(ShoppingCart::getUserId, userId.longValue());
+    wrapper.eq(ShoppingCart::getUserId, userId);
     wrapper.eq(shoppingCart.getDishId() != null, ShoppingCart::getDishId, shoppingCart.getDishId());
     wrapper.eq(shoppingCart.getSetmealId() != null, ShoppingCart::getSetmealId, shoppingCart.getSetmealId());
     ShoppingCart cart = shoppingCartService.getOne(wrapper);
@@ -92,7 +92,7 @@ public class ShoppingCartController {
   @DeleteMapping("/clean")
   public R<List<ShoppingCart>> clean() {
 
-    Integer userId = (Integer) redisTemplate.opsForValue().get("user");
+    Long userId = (Long) redisTemplate.opsForValue().get("user");
 
     LambdaQueryWrapper<ShoppingCart> wrapper = new LambdaQueryWrapper<>();
     wrapper.eq(ShoppingCart::getUserId, userId);

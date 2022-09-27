@@ -28,11 +28,11 @@ public class UserLoginCheckInterceptor extends HandlerInterceptorAdapter {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-    Integer userId = (Integer) redisTemplate.opsForValue().get("user");
+    Long userId = (Long) redisTemplate.opsForValue().get("user");
     String json = "";
     if (userId != null) {
       LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-      wrapper.eq(User::getId, userId.longValue());
+      wrapper.eq(User::getId, userId);
       User user = userService.getOne(wrapper);
       if (user == null) {
         json = JSONObject.toJSONString(R.error("NOTLOGIN"));

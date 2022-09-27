@@ -30,7 +30,7 @@ public class AddressBookController {
    */
   @PostMapping
   public R<AddressBook> save(@RequestBody AddressBook addressBook) {
-    Integer userId = (Integer) redisTemplate.opsForValue().get("user");
+    Long userId = (Long) redisTemplate.opsForValue().get("user");
     addressBook.setUserId(userId.longValue());
     log.info("addressBook:{}", addressBook);
     addressBookService.save(addressBook);
@@ -43,8 +43,8 @@ public class AddressBookController {
   @PutMapping("default")
   public R<AddressBook> setDefault(@RequestBody AddressBook addressBook) {
     LambdaUpdateWrapper<AddressBook> wrapper = new LambdaUpdateWrapper<>();
-    Integer userId = (Integer) redisTemplate.opsForValue().get("user");
-    wrapper.eq(AddressBook::getUserId, userId.longValue());
+    Long userId = (Long) redisTemplate.opsForValue().get("user");
+    wrapper.eq(AddressBook::getUserId, userId);
     wrapper.set(AddressBook::getIsDefault, 0);
     //SQL:update address_book set is_default = 0 where user_id = ?
     addressBookService.update(wrapper);
@@ -74,7 +74,7 @@ public class AddressBookController {
   @GetMapping("default")
   public R<AddressBook> getDefault() {
     LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
-    Integer userId = (Integer) redisTemplate.opsForValue().get("user");
+    Long userId = (Long) redisTemplate.opsForValue().get("user");
     queryWrapper.eq(AddressBook::getUserId, userId.longValue());
     queryWrapper.eq(AddressBook::getIsDefault, 1);
 
@@ -93,7 +93,7 @@ public class AddressBookController {
    */
   @GetMapping("/list")
   public R<List<AddressBook>> list(AddressBook addressBook) {
-    Integer userId = (Integer) redisTemplate.opsForValue().get("user");
+    Long userId = (Long) redisTemplate.opsForValue().get("user");
     addressBook.setUserId(userId.longValue());
     log.info("addressBook:{}", addressBook);
 

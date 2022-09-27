@@ -58,7 +58,7 @@ public class OrdersController {
     Page<Orders> ordersPage = new Page<>(page, pageSize);
     Page<OrdersDto> ordersDtoPage = new Page<>(page, pageSize);
 
-    Integer userId = (Integer) redisTemplate.opsForValue().get("user");
+    Long userId = (Long) redisTemplate.opsForValue().get("user");
     LambdaQueryWrapper<Orders> wrapper = new LambdaQueryWrapper<>();
     wrapper.eq(Orders::getUserId, userId);
     ordersService.page(ordersPage, wrapper);

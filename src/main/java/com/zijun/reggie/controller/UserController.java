@@ -74,7 +74,7 @@ public class UserController {
   @GetMapping("/current")
   public R<User> getCurrentUser() {
 
-    Integer userId = (Integer) redisTemplate.opsForValue().get("user");
+    Long userId = (Long) redisTemplate.opsForValue().get("user");
 
     User user = userService.getById(userId);
 

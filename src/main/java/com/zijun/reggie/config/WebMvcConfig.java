@@ -48,7 +48,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     };
     String[] employeePath = {
             "/employee/**",
-            "/setmeal/**",
+//            "/setmeal/**",
             "/dish/**",
             "/category/**"
     };

@@ -14,6 +14,9 @@ import com.zijun.reggie.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -166,15 +169,17 @@ public class DishController {
   }
 
   @GetMapping("/list")
+  @Cacheable(value = "dishCache", key = "'dish_' + #dish.categoryId + '_1'")
+  @CachePut(value = "dishCache", key = "'dish_' + #dish.categoryId + '_1'")
   public R<List<DishDto>> list(Dish dish) {
 
     List<DishDto> dishDtos = null;
 
     String key = "dish_" + dish.getCategoryId() + "_" + dish.getStatus();
-    dishDtos = (List<DishDto>) redisTemplate.opsForValue().get("key");
-    if(dishDtos != null) {
-      return R.success(dishDtos);
-    }
+//    dishDtos = (List<DishDto>) redisTemplate.opsForValue().get(key);
+//    if(dishDtos != null) {
+//      return R.success(dishDtos);
+//    }
 
     LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
     wrapper.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
